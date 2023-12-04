@@ -1,7 +1,7 @@
 import atexit
 
 
-class PythonSocket:
+class ServerSocket:
     def __init__(self, host, port, socket):
         self.__host = host
         self.__port = port

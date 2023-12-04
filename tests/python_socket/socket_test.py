@@ -1,7 +1,7 @@
 import unittest
 
-from python_socket.entity.python_socket import PythonSocket
-from python_socket.service.socket_service import SocketService
+from server_socket.entity.server_socket import PythonSocket
+from server_socket.service.socket_service import SocketService
 
 
 class TestPythonSocket(unittest.TestCase):

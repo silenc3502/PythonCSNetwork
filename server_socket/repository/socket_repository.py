@@ -1,5 +1,7 @@
 import socket
-from python_socket.entity.python_socket import PythonSocket
+from time import sleep
+
+from server_socket.entity.server_socket import ServerSocket
 
 
 class SocketRepository:
@@ -9,7 +11,7 @@ class SocketRepository:
     def create(self, host, port):
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        self.__python_server_socket = PythonSocket(host, port, server_socket)
+        self.__python_server_socket = ServerSocket(host, port, server_socket)
 
         return self.__python_server_socket
 
@@ -28,11 +30,33 @@ class SocketRepository:
             self.__python_server_socket.get_port(),
         ))
 
+    def set_listen_number(self, count):
+        server_socket = self.__python_server_socket.get_socket()
+        server_socket.listen(count)
+
+    def accept_client_socket(self):
+        try:
+            server_socket = self.__python_server_socket.get_socket()
+            client_socket, client_address = server_socket.accept()
+            return client_socket, client_address
+
+        except BlockingIOError:
+            sleep(0.5)
+            return None, None
+
+        except Exception as e:
+            print(f"Error during accept: {e}")
+            return None, None
+
     def close(self):
         server_socket = self.__python_server_socket.get_socket()
         server_socket.close()
 
         self.__python_server_socket = None
+
+
+
+
 
 
 
