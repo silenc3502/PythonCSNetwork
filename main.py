@@ -1,3 +1,4 @@
+import multiprocessing
 import socket
 from time import sleep
 
@@ -13,12 +14,21 @@ socket_service.set_blocking_operation()
 
 process_manager_service = ProcessManagerService()
 
+queue = multiprocessing.Queue()
+
+# nc localhost 33333
 while True:
     try:
-        socket_service.accept_client_socket()
+        socket_service.accept_client_socket(queue)
 
-        client, address = socket_service.get_client_socket_info()
-        process_manager_service.create_receiver_process(client, address)
+        if not queue.empty():
+            print("Get Queue info!")
+            client, address = queue.get()
+            process_manager_service.create_receiver_process(client, address)
+            process_manager_service.create_transmitter_process(client, address)
 
     except socket.error:
         sleep(0.5)
+
+#client, address = socket_service.get_client_socket_info()
+#process_manager_service.create_receiver_process(client, address)

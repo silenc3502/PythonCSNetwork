@@ -22,15 +22,18 @@ class SocketService:
     def set_server_listen_number(self, count):
         self.__socket_repository.set_listen_number(count)
 
-    def accept_client_socket(self):
+    def accept_client_socket(self, queue):
         client_socket, client_address = self.__socket_repository.accept_client_socket()
 
         if client_socket is None:
-            print("No client socket available.")
+            pass
+            #print("No client socket available.")
         else:
             print("client_socket: {}, client_address: {}".format(client_socket, client_address))
             self.__client_socket_repository.create_client_socket(client_socket, client_address)
             self.__client_socket_repository.set_blocking_operation()
+
+            queue.put((client_socket, client_address))
 
     def get_client_socket_info(self):
         self.__client_socket_repository.get_client_socket()

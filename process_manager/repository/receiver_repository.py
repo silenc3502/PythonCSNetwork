@@ -7,7 +7,7 @@ from process_manager.entity.receiver_message import ReceiverMessage
 
 class ReceiverRepository:
     def __init__(self):
-        pass
+        print("ReceiverRepository Constructor")
 
     def receive_data(self, client_socket, client_address):
         try:
