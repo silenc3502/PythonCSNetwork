@@ -18,6 +18,10 @@ class TransmitterRepository:
 
                 time.sleep(0.5)
 
+            except (socket.error, BrokenPipeError) as e:
+                print(f"사용자 연결 종료!")
+                return None
+
             except socket.error as e:
                 print("Socket error:", e)
                 time.sleep(0.5)
